@@ -19,4 +19,27 @@ router.post('/post', function(req,res,next){
 	});
 });
 
+router.param('post', function(req, res, next, id) {
+  var query = Pictures.findById(id);
+  query.exec(function (err, post){
+    if (err) { return next(err); }
+    if (!post) { return next(new Error("can't find comment")); }
+    req.post = post;
+    return next();
+  });
+});
+
+router.get('/post/:post', function(req, res) {
+  res.json(req.post);
+});
+
+
+router.put('/post/:post/upvote', function(req, res, next) {
+  req.post.upvote(function(err, post){
+    if (err) { return next(err); }
+    res.json(post);
+  });
+});
+
+
 module.exports = router;

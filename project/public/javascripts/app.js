@@ -1,19 +1,52 @@
 angular.module('project', [])
 .controller('MainCtrl', [
-  '$scope',
-  function($scope){
+  '$scope','$http',
+  function($scope,$http){
 	$scope.posts = [
-	{name:'Becca',caption:'YAY',link:'<img src= "https://i.ytimg.com/vi/dKDvbh804Wg/maxresdefault.jpg">', upvotes:0},
-	{name:'Becca2',caption:'YAY',link:'link', upvotes:1}
 	];  
 
 
 	$scope.addPost = function ()
 	{
-		$scope.posts.push({name:$scope.formName, upvotes:0});
+		if($scope.formName === '') { return; }
+		console.log("In add Post");
+		$scope.create({
+			name: $scope.formName,
+			caption: $scope.formCaption,
+			link: $scope.formLink,
+			upvotes: 0
+		});
+		 $scope.formName = '';
+		$scope.formCaption='';
+		$scope.formLink='';	
+
+
 	}
 
         $scope.incrementUpvotes = function(post) {
-          post.upvotes += 1;
+          $scope.upvote(post);
         };
+
+  $scope.getAll = function() {
+    return $http.get('/post').success(function(data){
+      angular.copy(data, $scope.posts);
+    });
+  };
+  $scope.getAll();
+
+  $scope.create = function(post) {
+    return $http.post('/post', post).success(function(data){
+      $scope.posts.push(data);
+    });
+  };
+
+    $scope.upvote = function(post) {
+      return $http.put('/post/' + post._id + '/upvote')
+        .success(function(data){
+          console.log("upvote worked");
+          post.upvotes += 1;
+        });
+    };
+
+
 }]);

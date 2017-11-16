@@ -16,6 +16,16 @@ body {
   background-color:#cbd9ef;
 }
 
+.name{
+	text-size:20pt;
+}
+
+.image{
+	width:40%;
+}
+.caption{
+	width 40%;
+}
 
 a {
   color: #00B7FF;
