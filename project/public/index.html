@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Comments!</title>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="javascripts/comments.js"></script>
+<title>Pictures!</title>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+<script src="javascripts/app.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
 </head>
 
-<body>
+<body ng-app="project" ng-controller="MainCtrl">
 <div id ="FormsNButtons">
-<br>
-<form id="commentForm" action="">
-<label for="name">Username: </label><input type="text" id="name" placeholder="Name"><br>
-<label for="Caption">Caption: </label><input type="text" id="caption" placeholder="Caption"><br>
-<label for="ImageLink">Image Link: </label><input type="text" id="link" placeholder="URL"><br>
-<br>
-</form>
+	<br>
+	<form id="commentForm" action="">
+		Username:<input type = "text" ng-model="formName"></input><br>
+		Caption:<input type = "text" ng-model="formCaption"></input><br>
+		Image Link:<input type="tet" ng-model="formLink"></input>
+		<br><br>
+	</form>
 
-<button id="postComment">Post Comment</button>
-<br><br>
+	<button id="postComment" ng-click = "addPost()">Post Comment</button><br><br>
 </div>
 
 <br><br>
 
-<div id ="results">
-<br>
-<div id="json"></div>
-<div id="done"></div>
-<div id="comments"></div>
+<div id ="results" ng-repeat = "post in posts | orderBy:'- upvotes'">
+	<br>
+	{{post.name}}
+	<br>
+	{{post.link}}
+	<br>
+	{{post.caption}}
+	<br>
+	<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+	Likes: {{post.upvotes}}
 </div>
+
 </body>
 </html>
 
